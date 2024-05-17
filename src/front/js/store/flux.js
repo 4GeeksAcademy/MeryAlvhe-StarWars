@@ -19,6 +19,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			species: [{}],
 			vehicles: [{}],
 			planets: [{}],
+			currentUserId:'',
+			currentUser:[{}]
 
 		},
 		actions: {
@@ -69,7 +71,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json();
-				console.log(data)
 				setStore({species: data.results})
 			}, 
 			getVehicles: async () => {
@@ -90,6 +91,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({planets: data.results})
 			},
+			settingCurrentUser: (text)=> {setStore({currentUserId: text})}, 
+			getCurrenUser: async ()=>{
+				const uri = getStore().currentUserId;
+				const response = await fetch (uri);
+				if (!response.ok){
+					console.log('Error');
+					return
+				}
+				const data = await response.json();
+				console.log(data)
+				setStore({currentUser: data.result.properties})
+			}
 
 		}
 	};

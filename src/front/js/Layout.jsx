@@ -14,6 +14,7 @@ import { Characters } from "./pages/Characters.jsx";
 import { Species } from "./pages/Species.jsx";
 import { Vehicles } from "./pages/Vehicles.jsx";
 import { Planets } from "./pages/Planets.jsx";
+import { CurrentCharacter } from "./pages/CurrentCaracter.jsx";
 
 
 //create your first component
@@ -37,6 +38,7 @@ const Layout = () => {
                         <Route element={<Species/>} path="/species"/>
                         <Route element={<Vehicles/>} path="/vehicles"/>
                         <Route element={<Planets/>} path="/planets"/>
+                        <Route element={<CurrentCharacter/>} path='/characters-details' />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
