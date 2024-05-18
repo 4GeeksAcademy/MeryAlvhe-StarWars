@@ -33,12 +33,19 @@ export const Navbar = () => {
 					<div className="btn-group dropstart">
 						<button className="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Favorites 
-							<span class=" m-1 badge text-bg-danger"> {store.counter} </span>
+							<span className=" m-1 badge text-bg-danger"> {store.favorites.length} </span>
 						</button>
 						<ul className="dropdown-menu">
-							<li><a className="dropdown-item" href="#">Action</a></li>
-							<li><a className="dropdown-item" href="#">Action two</a></li>
-							<li><a className="dropdown-item" href="#">Action three</a></li>
+							{store.favorites.map((item, index)=>
+							
+								 <li key={index}className="dropdown-item d-flex justify-content-between">
+									{item}
+									<span className="ms-4" onClick={()=>actions.removeFavorites(item)}>
+									<i className="fas fa-trash"></i>
+									</span>
+								 </li>
+							)}
+							
 						</ul>
 					</div>
 				</div>

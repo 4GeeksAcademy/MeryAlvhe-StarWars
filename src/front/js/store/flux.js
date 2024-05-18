@@ -23,6 +23,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentUser:[{}],
 			currentUserProperties:[{}],
 			counter: 0,
+			favorites: [],
+
 
 		},
 		actions: {
@@ -31,7 +33,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({counter:getStore().counter+1})
 			},
 			decrementar: () =>{
-
+				setStore({counter: getStore().counter-1})
+			},
+			addFavorites: (text) =>{
+				setStore({favorites: [...getStore().favorites, text]})
+			},
+			removeFavorites: (remove) =>{
+				setStore({favorites: getStore().favorites.filter((item)=> item != remove)})
 			},
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
