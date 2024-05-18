@@ -20,11 +20,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			vehicles: [{}],
 			planets: [{}],
 			currentUserId:'',
-			currentUser:[{}]
+			currentUser:[{}],
+			currentUserProperties:[{}],
+			counter: 0,
 
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+			incrementar: () =>{
+				setStore({counter:getStore().counter+1})
+			},
+			decrementar: () =>{
+
+			},
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
@@ -101,7 +109,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				console.log(data)
-				setStore({currentUser: data.result.properties})
+				setStore({currentUser: data.result})
+				setStore({currentUserProperties: data.result.properties})
 			}
 
 		}

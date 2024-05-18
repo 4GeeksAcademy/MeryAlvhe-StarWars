@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../../styles/navbar.css";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
+	const {store, actions} = useContext(Context);
+
 	return (
 		<nav className="navbar navbar-expand-lg bg-primary rounded" aria-label="Eleventh navbar example">
 			<div className="container-fluid">
@@ -27,9 +30,10 @@ export const Navbar = () => {
 						</li>
 
 					</ul>
-					<div className="dropdown-center">
+					<div className="btn-group dropstart">
 						<button className="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Favorites
+							Favorites 
+							<span class=" m-1 badge text-bg-danger"> {store.counter} </span>
 						</button>
 						<ul className="dropdown-menu">
 							<li><a className="dropdown-item" href="#">Action</a></li>

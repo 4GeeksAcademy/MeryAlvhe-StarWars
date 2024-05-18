@@ -2,5 +2,15 @@
     font-family: "Jersey 25", sans-serif;
     color: #FFC300;
 }
+.close {
+    margin-right: 25px;
+    font-size: 30px;
+    color: #FFC300;
+}
 
-
+.imgCard {
+    margin-left: 30px;
+}
+.font {
+    font-family: "Jersey 25", sans-serif;
+}

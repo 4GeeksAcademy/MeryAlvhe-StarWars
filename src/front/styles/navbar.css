@@ -8,3 +8,10 @@
     color: #FFC300;
     font-size: 20px;
 }
+.favoritesFont {
+    font-family: "Jersey 25", sans-serif;
+    color: white;
+}
+.favoritesSettings{
+    margin-left: 40px;
+}
