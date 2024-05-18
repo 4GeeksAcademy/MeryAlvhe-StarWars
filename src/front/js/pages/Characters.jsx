@@ -33,7 +33,7 @@ export const Characters = () => {
                                             <h5 className="card-title indexFont ">{item.name}</h5>
                                         </div>
                                         <div className="col">
-                                            <i className="far fa-star" onClick={()=> actions.addFavorites(item.name)}></i>
+                                            <i className={store.favorites ? "fas fa-star" : "fas fa-star  text-warning text-warning"} onClick={()=> actions.addFavorites(item.name)}></i>
                                         </div>
                                     </div>
 

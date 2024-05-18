@@ -35,10 +35,10 @@ export const Navbar = () => {
 							Favorites 
 							<span className=" m-1 badge text-bg-danger"> {store.favorites.length} </span>
 						</button>
-						<ul className="dropdown-menu">
+						<ul className="dropdown-menu ">
 							{store.favorites.map((item, index)=>
 							
-								 <li key={index}className="dropdown-item d-flex justify-content-between">
+								 <li key={index}className="dropdown-item d-flex justify-content-between favoritesFont">
 									{item}
 									<span className="ms-4" onClick={()=>actions.removeFavorites(item)}>
 									<i className="fas fa-trash"></i>

@@ -14,3 +14,7 @@
 .font {
     font-family: "Jersey 25", sans-serif;
 }
+
+.favorite:hover {
+    color: #FFC300;
+}

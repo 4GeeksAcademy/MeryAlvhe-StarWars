@@ -24,6 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentUserProperties:[{}],
 			counter: 0,
 			favorites: [],
+			
 
 
 		},
@@ -40,6 +41,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			removeFavorites: (remove) =>{
 				setStore({favorites: getStore().favorites.filter((item)=> item != remove)})
+				
 			},
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
