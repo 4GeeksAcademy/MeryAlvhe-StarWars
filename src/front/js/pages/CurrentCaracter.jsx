@@ -30,8 +30,8 @@ export const CurrentCharacter = () => {
                         <div className="card-body font">
                             <h1 className="card-title mb-5 indexFont">{store.currentUserProperties.name}</h1>
                             <p className="card-text mt-1"> Birth year: {store.currentUserProperties.birth_year}</p>
-                            <p className="card-text">Height: {store.currentUserProperties.height}</p>
-                            <p className="card-text">Mass: {store.currentUserProperties.mass}</p>
+                            <p className="card-text">Height: {store.currentUserProperties.height}cm</p>
+                            <p className="card-text">Mass: {store.currentUserProperties.mass}kg</p>
                             <p className="card-text">Hair color: {store.currentUserProperties.hair_color}</p>
                             <p className="card-text">Skin color: {store.currentUserProperties.skin_color}</p>
                             <p className="card-text">Gender: {store.currentUserProperties.gender}</p>

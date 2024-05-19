@@ -26,7 +26,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentPlanet:[{}],
 			currentSpeciesId:'',
 			currentSpecies:[{}],
-
+			currentVehicleId:'',
+			currentVehicles:[{}],
 			counter: 0,
 			favorites: [],
 			favoritesColor: "fas fa-star",
@@ -123,6 +124,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			settingCurrentUser: (text)=> {setStore({currentUserId: text})}, 
 			settingCurrentPlanet: (id) =>{setStore({currentPlanetId:id})},
 			settingCurrentSpecies: (id) =>{setStore({currentSpeciesId:id})},
+			settingCurrentVehicles: (id) =>{setStore({currentVehicleId:id})},
 			getCurrentUser: async ()=>{
 				const uri = getStore().currentUserId;
 				const response = await fetch (uri);
@@ -153,6 +155,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({currentSpecies: data.result.properties})
 			},
+			getCurrentVehicles: async ()=>{
+				const response = await fetch (`https://www.swapi.tech/api/vehicles/${getStore().currentVehicleId}`)
+				if (!response.ok){
+					console.log('Error');
+					return
+				}
+				const data = await response.json();
+				setStore({currentVehicles: data.result.properties})
+			},
 			addUser: async (user)=>{
 				const uri =`${getStore().urlApiContact}agendas/${user}`
 				const options = {
@@ -181,7 +192,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({contacts: data.contacts})
 
 			},
-
 			addContact: async (contact)=>{
 				const uri = `${getStore().urlApiContact}agendas/${getStore().user}/contacts`
 				const options = {

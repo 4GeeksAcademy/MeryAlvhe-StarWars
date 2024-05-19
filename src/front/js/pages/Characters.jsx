@@ -16,6 +16,7 @@ export const Characters = () => {
         actions.settingCurrentUser(parameter)
     } 
 
+
     return (
         <div className="container mt-3 mb-3">
             {!store ? <Spinner /> :

@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Spinner } from "../component/Spinner.jsx";
 import { Link } from "react-router-dom";
+import "../../styles/index.css"
 
 export const CurrentSpecies = ()=>{
     const{ store, actions } = useContext(Context);
@@ -27,12 +28,11 @@ export const CurrentSpecies = ()=>{
                     <div className="col-md-6">
                         <div className="card-body font">
                             <h1 className="card-title mb-5 indexFont">{store.currentSpecies.name}</h1>
-                            <p className="card-text mt-1"> 1 </p>
-                            <p className="card-text">2 </p>
-                            <p className="card-text">Mass: </p>
-                            <p className="card-text">Hair color: </p>
-                            <p className="card-text">Skin color: </p>
-                            <p className="card-text">Gender: </p>
+                            <p className="card-text mt-1"> Classifcation: {store.currentSpecies.classification}</p>
+                            <p className="card-text"> Designation: {store.currentSpecies.designation} </p>
+                            <p className="card-text"> Average height: {store.currentSpecies.average_height} cm </p>
+                            <p className="card-text"> Average lifespan: {store.currentSpecies.average_lifespan}  years</p>
+                            <p className="card-text"> Language: {store.currentSpecies.language} </p>
                             
                         </div>
                     </div>

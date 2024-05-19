@@ -1,9 +1,14 @@
 import React, { useContext } from "react";
 import { Context } from '../store/appContext.js';
 import { Spinner } from "../component/Spinner.jsx";
+import { Link } from "react-router-dom";
 
 export const Vehicles = () => {
     const { store, actions } = useContext(Context);
+
+    const handleVehicle = (id) =>{
+        actions.settingCurrentVehicles(id)
+    }
 
     return (
         <div className="container mt-3 mb-3">
@@ -13,7 +18,9 @@ export const Vehicles = () => {
                     {store.vehicles.map((item, id) =>
                         <div key={id} className="col-lg-3 col-md-6 col-sm-10 mb-1">
                             <div className="card" >
+                                <Link to="/vehicle-details" onClick={()=> handleVehicle(item.uid)}>
                                 <img src={`https://starwars-visualguide.com/assets/img/vehicles/${item.uid}.jpg`} className="card-img-top" alt={item.name} />
+                                </Link>
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-10">

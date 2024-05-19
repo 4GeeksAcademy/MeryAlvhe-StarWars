@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import "../../styles/index.css"
 
 export const CurrentPlanet = ()=>{
     const { store, actions} = useContext(Context)
@@ -30,11 +31,11 @@ export const CurrentPlanet = ()=>{
                     <div className="col-md-6">
                         <div className="card-body font">
                             <h1 className="card-title mb-5 indexFont">{store.currentPlanet.name}</h1>
-                            <p className="card-text mt-1"> Diameter: {store.currentPlanet.diameter} </p>
+                            <p className="card-text mt-1"> Diameter: {store.currentPlanet.diameter}km</p>
                             <p className="card-text"> Population: {store.currentPlanet.population} </p>
                             <p className="card-text"> Climate: {store.currentPlanet.climate}</p>
                             <p className="card-text"> Terrain: {store.currentPlanet.terrain} </p>
-                            <p className="card-text"> Rotation period: {store.currentPlanet.rotation_period}</p>                           
+                            <p className="card-text"> Rotation period: {store.currentPlanet.rotation_period} days</p>                           
                         </div>
                     </div>
                 </div>
