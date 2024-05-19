@@ -28,6 +28,9 @@ export const Navbar = () => {
 						<li className="nav-item">
 							<Link className="nav-link font" aria-current="page" to="/planets">Planets</Link>
 						</li>
+						<li className="nav-item">
+							<Link className="nav-link font" aria-current="page" to="/contact-list">Contacts</Link>
+						</li>
 
 					</ul>
 					<div className="btn-group dropstart">
@@ -48,6 +51,7 @@ export const Navbar = () => {
 							
 						</ul>
 					</div>
+					
 				</div>
 			</div>
 		</nav>

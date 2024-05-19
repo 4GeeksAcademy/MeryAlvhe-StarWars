@@ -22,8 +22,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentUserId:'',
 			currentUser:[{}],
 			currentUserProperties:[{}],
+			
+			currentPlanetId:'',
+			currentPlanet:[{}],
 			counter: 0,
 			favorites: [],
+			favoritesColor: "fas fa-star",
+			urlApiContact:"https://playground.4geeks.com/contact/",
+			user:'Meryalvhe',
+			contacts:[{}],
+			
 			
 
 
@@ -37,8 +45,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({counter: getStore().counter-1})
 			},
 			addFavorites: (text) =>{
-				setStore({favorites: [...getStore().favorites, text]})
-			},
+				setStore({favorites: [...getStore().favorites, text]})		
+				
+			},	
 			removeFavorites: (remove) =>{
 				setStore({favorites: getStore().favorites.filter((item)=> item != remove)})
 				
@@ -110,7 +119,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({planets: data.results})
 			},
 			settingCurrentUser: (text)=> {setStore({currentUserId: text})}, 
-			getCurrenUser: async ()=>{
+			settingCurrentPlanet: (id) =>{setStore({currentPlanetId:id})},
+			getCurrentUser: async ()=>{
 				const uri = getStore().currentUserId;
 				const response = await fetch (uri);
 				if (!response.ok){
@@ -121,7 +131,79 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(data)
 				setStore({currentUser: data.result})
 				setStore({currentUserProperties: data.result.properties})
+			},
+			getCurrentPlanet: async() =>{
+				const response = await fetch (`https://www.swapi.tech/api/planets/${getStore().currentPlanetId}`);
+				if (!response.ok){
+					console.log('Error');
+					return
+				}
+				const data = await response.json();
+				setStore({currentPlanet: data.result.properties})
+			},
+
+			addUser: async (user)=>{
+				const uri =`${getStore().urlApiContact}agendas/${user}`
+				const options = {
+					method: 'POST',
+					body: JSON.stringify('')
+				  };
+				  const response = await fetch(uri, options);
+				  if (!response.ok) {
+					if (response.status != 400) {
+					  console.log('Error: ', response.status, response.statusText);
+					  return;
+					}
+				  }
+				  const data = await response.json();
+				  setStore({ user: data.slug})
+				  getContacts()
+			},
+			getcontacts: async ()=> {
+				const uri =`${getStore().urlApiContact}agendas/${getStore().user}/contacts`
+				const response = await fetch (uri);
+				if (!response.ok){
+					console.log('Error', response.status, response.status.text);
+					return
+				}
+				const data = await response.json();
+				setStore({contacts: data.contacts})
+
+			},
+
+			addContact: async (contact)=>{
+				const uri = `${getStore().urlApiContact}agendas/${getStore().user}/contacts`
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-type': 'application/json'
+					},
+					body: JSON.stringify(contact)
+				}
+				const response = await fetch( uri, options);
+				if (!response.ok){
+					console.log('Error', response.status, response.status.text);
+					return
+				}
+
+				getActions().getcontacts();
+				
+			
+
+			},
+			deleteContact: async (id)=>{
+				const uri = `${getStore().urlApiContact}agendas/${getStore().user}/contacts/${id}`
+				const options = {
+					method: 'DELETE'
+				  };
+				  const response = await fetch(uri, options);
+				  if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				  };
+				  getActions().getcontacts();
 			}
+
 
 		}
 	};

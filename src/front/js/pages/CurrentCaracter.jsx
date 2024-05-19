@@ -8,7 +8,7 @@ export const CurrentCharacter = () => {
     const {store, actions} = useContext (Context);
 
     useEffect(()=>{
-        actions.getCurrenUser()
+        actions.getCurrentUser()
     },[])
 
     /* console.log(store.currentUserProperties) */

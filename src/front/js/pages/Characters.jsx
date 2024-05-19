@@ -11,7 +11,7 @@ export const Characters = () => {
         actions.settingUser(user)
     }
 
-    const handlePlanet = (parameter) =>{
+    const handleCharacter = (parameter) =>{
         console.log(parameter)
         actions.settingCurrentUser(parameter)
     } 
@@ -24,7 +24,7 @@ export const Characters = () => {
                     {store.characters.map((item, id) =>
                         <div key={id} className="col-lg-3 col-md-6 col-sm-10 mb-1">
                             <div className="card" >
-                                <Link to="/characters-details" onClick={()=> handlePlanet(item.url)}>
+                                <Link to="/characters-details" onClick={()=> handleCharacter(item.url)}>
                                     <img src={`https://starwars-visualguide.com/assets/img/characters/${item.uid}.jpg`} className="card-img-top" alt={item.name} />
                                 </Link>
                                 <div className="card-body ">
@@ -33,7 +33,7 @@ export const Characters = () => {
                                             <h5 className="card-title indexFont ">{item.name}</h5>
                                         </div>
                                         <div className="col">
-                                            <i className={store.favorites ? "fas fa-star" : "fas fa-star  text-warning text-warning"} onClick={()=> actions.addFavorites(item.name)}></i>
+                                            <i className="fas fa-star favorite"  onClick={()=> actions.addFavorites(item.name)}></i>
                                         </div>
                                     </div>
 
