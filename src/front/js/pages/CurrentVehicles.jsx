@@ -20,7 +20,7 @@ export const CurrentVehicles = () =>{
                 </Link>
             </div>
                 <div className="row g-0">
-                    <div className="col-md-4 mb-5 mt-5 imgCard ">
+                    <div className="col-md-4 mb-5 mt-4 imgCard ">
                         <img src={`https://starwars-visualguide.com/assets/img/vehicles/${store.currentVehicleId}.jpg`} className="img-fluid rounded " alt="..."/>
                     </div>
                     <div className="col-md-6">
