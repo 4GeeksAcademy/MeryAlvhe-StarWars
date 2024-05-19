@@ -22,9 +22,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentUserId:'',
 			currentUser:[{}],
 			currentUserProperties:[{}],
-			
 			currentPlanetId:'',
 			currentPlanet:[{}],
+			currentSpeciesId:'',
+			currentSpecies:[{}],
+
 			counter: 0,
 			favorites: [],
 			favoritesColor: "fas fa-star",
@@ -120,6 +122,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			settingCurrentUser: (text)=> {setStore({currentUserId: text})}, 
 			settingCurrentPlanet: (id) =>{setStore({currentPlanetId:id})},
+			settingCurrentSpecies: (id) =>{setStore({currentSpeciesId:id})},
 			getCurrentUser: async ()=>{
 				const uri = getStore().currentUserId;
 				const response = await fetch (uri);
@@ -141,7 +144,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({currentPlanet: data.result.properties})
 			},
-
+			getCurrentSpecies:async() =>{
+				const response = await fetch (`https://www.swapi.tech/api/species/${getStore().currentSpeciesId}`);
+				if (!response.ok){
+					console.log('Error');
+					return
+				}
+				const data = await response.json();
+				setStore({currentSpecies: data.result.properties})
+			},
 			addUser: async (user)=>{
 				const uri =`${getStore().urlApiContact}agendas/${user}`
 				const options = {
