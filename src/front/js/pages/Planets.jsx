@@ -24,8 +24,8 @@ export const Planets = () => {
                     {store.planets.map((item, id) =>
                         <div key={id} className="col-lg-3 col-md-6 col-sm-10 mb-1">
                             <div className="card" >
-                                <Link to="/planet-details" onClick={()=> handlePlanet(item.uid)}>
-                                <img src={`https://starwars-visualguide.com/assets/img/planets/${item.uid}.jpg`} onError={imgError} className="card-img-top" alt={item.name} />
+                                <Link to="/planet-details" onClick={() => handlePlanet(item.uid)}>
+                                    <img src={`https://starwars-visualguide.com/assets/img/planets/${item.uid}.jpg`} onError={imgError} className="card-img-top" alt={item.name} />
                                 </Link>
                                 <div className="card-body">
                                     <div className="row">
@@ -33,7 +33,11 @@ export const Planets = () => {
                                             <h5 className="card-title indexFont ">{item.name}</h5>
                                         </div>
                                         <div className="col">
-                                            <i className="far fa-star" onClick={()=> actions.addFavorites(item.name)}></i>
+                                            {store.favorites.includes(item.name) ? <i className="fas fa-star text-warning" onClick={() => actions.removeFavorites(item.name)}></i>
+                                                :
+                                                <i className="far fa-star favorite" onClick={() => actions.addFavorites(item.name)}></i>
+                                            }
+
                                         </div>
                                     </div>
                                 </div>

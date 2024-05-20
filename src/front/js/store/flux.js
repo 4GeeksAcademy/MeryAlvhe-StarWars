@@ -32,7 +32,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favorites: [],
 			favoritesColor: "fas fa-star",
 			urlApiContact:"https://playground.4geeks.com/contact/",
-			user:'Meryalvhe',
+			user:'',
 			contacts:[{}],
 			
 			
@@ -48,7 +48,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({counter: getStore().counter-1})
 			},
 			addFavorites: (text) =>{
-				setStore({favorites: [...getStore().favorites, text]})		
+				if (getStore().favorites.includes(text)){
+					return
+				}
+				setStore({favorites: [...getStore().favorites, text]})	
 				
 			},	
 			removeFavorites: (remove) =>{
@@ -172,14 +175,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  };
 				  const response = await fetch(uri, options);
 				  if (!response.ok) {
-					if (response.status != 400) {
-					  console.log('Error: ', response.status, response.statusText);
+					console.log('Error: ', response.status, response.statusText);
+					if (response.status == 400) {
+					  setStore({user:user})
+					  getActions().getcontacts()
 					  return;
 					}
 				  }
 				  const data = await response.json();
 				  setStore({ user: data.slug})
-				  getContacts()
+				  getActions().getcontacts()
 			},
 			getcontacts: async ()=> {
 				const uri =`${getStore().urlApiContact}agendas/${getStore().user}/contacts`

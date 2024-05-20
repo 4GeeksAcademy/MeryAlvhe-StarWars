@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export const ContactListForm = () => {
     const { store, actions } = useContext(Context);
 
-    const [user, setUser] = useState('');
+    
     const [name, setName] = useState('');
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
@@ -15,12 +15,7 @@ export const ContactListForm = () => {
     const navigate = useNavigate();
 
 
-    const handleSubmitUser = (event)=>{
-        event.preventDefault();
-        if(user.trim()!==' '){
-            actions.addUser(user)
-        }
-    }
+  
 
 
     const handleSubmit = (event) => {
@@ -47,16 +42,7 @@ export const ContactListForm = () => {
 
 
             {!store.user ?
-                <form className="row gy-2 gx-3 align-items-center" onSubmit={handleSubmitUser}>
-                    <h1 className="indexFont">Create your phonebook</h1>
-                    <div className="col">                     
-                        <input type="text" className="form-control indexFont" id="autoSizingInput" placeholder="Phonebook name" value={user} onChange={(event)=> setUser(event.target.value)}/>
-                    </div>
-                    <div className="col-auto">
-                        <button type="submit" className="btn btn-warning indexFont">Submit</button>
-                    </div>
-                </form>
-                :
+                <Spiner/>                :
                 <form className="indexFont text-start" onSubmit={handleSubmit}>
                     <h1 className="indexFont"> New Contact </h1>
 
