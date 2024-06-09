@@ -44,7 +44,30 @@ class Posts(db.Model):
                 'user_id': self.user_id}
 
 
-class Planets(db.Model):
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String, nullable=False)
+    date = db.Colum(db.Date, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    post_to = db.relationship('Posts', foreign_keys=[post_id])
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_to = db.relationship('Users', foreign_keys=[user_id])
+
+    def __repr__(self):
+        return f'<comment:{self.body}>'
+    
+    def serialize(self):
+        return{'id': self.id,
+               'body': self.body,
+               'date': self.date,
+               'post_to': post_to,
+               'user_to': user_to}
+
+
+class Followers(db.Model): 
+    pass
+
+class Planets(db.Model): # Modelado StarWars project
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), nullable=False)
     diameter = db.Column(db.Integer, nullable=False)
@@ -120,7 +143,7 @@ class CharacterFavorites(db.Model):
     character_favorite = db.relationship('Characters', foreign_keys=[character_id])
 
     def __repr__(self):
-        return f'<name:{self.user_to}'
+        return f'<user:{self.user_to}'
     
     def serialize(self):
         return{'id': self.id,
@@ -142,3 +165,5 @@ class PlanetFavorites(db.Model):
         return{'id': self.id,
                'user_to': self.user_to,
                'planet_favorite': planet_favorite}
+
+
