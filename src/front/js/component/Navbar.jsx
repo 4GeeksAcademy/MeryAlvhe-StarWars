@@ -51,6 +51,9 @@ export const Navbar = () => {
 							
 						</ul>
 					</div>
+					<Link to="/login" className="btn btn-warning " type="button">
+							Login
+					</Link>
 					
 				</div>
 			</div>
