@@ -118,3 +118,27 @@ class CharacterFavorites(db.Model):
     user_to = db.relationship('Users', foreign_keys=[user_id])    
     character_id = db.Column(db.Integer, db.ForeignKey('characters.id'))
     character_favorite = db.relationship('Characters', foreign_keys=[character_id])
+
+    def __repr__(self):
+        return f'<name:{self.user_to}'
+    
+    def serialize(self):
+        return{'id': self.id,
+               'user_to': self.user_to,
+               'character_favorite': character_favorite}
+
+
+class PlanetFavorites(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_to = db.relationship('Users', foreign_keys=[user_id])    
+    planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'))
+    planet_favorite = db.relationship('Planets', foreign_keys=[planet_id])
+
+    def __repr__(self):
+        return f'<name:{self.user_to}'
+    
+    def serialize(self):
+        return{'id': self.id,
+               'user_to': self.user_to,
+               'planet_favorite': planet_favorite}
