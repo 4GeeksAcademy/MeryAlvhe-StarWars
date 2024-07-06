@@ -67,14 +67,17 @@ class Comments(db.Model):
 class Followers(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     user_id_from_favorite = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user_id_from = db.relationship('Users', foreign_keys=[user_id])
+    user_id_from = db.relationship('Users', foreign_keys=[user_id_from_favorite])
     user_id_to_favorite = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user_id_to = db.relationship('Users', foreign_keys=[user_id])
+    user_id_to = db.relationship('Users', foreign_keys=[user_id_to_favorite])
 
     def __repr__(self):
         return f'<comment:{self.user_id_from}>'    
-
-
+    
+    def serialize(self):
+        return{'id': self.id,
+               'user_id_from': self.user_id_from_favorite,
+               'user_id_to': self. user_id_to_favorite}               
 
 
 class Planets(db.Model): # Modelado StarWars project
@@ -175,5 +178,6 @@ class PlanetFavorites(db.Model):
         return{'id': self.id,
                'user_to': self.user_to,
                'planet_favorite': self.planet_favorite}
+
 
 
