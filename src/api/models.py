@@ -104,14 +104,14 @@ class Planets(db.Model): # Modelado StarWars project
 class Characters(db.Model): 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), nullable=False)
-    birth_year = db.Column(db.Integer, nullable=False)
-    height = db.Column(db.Integer, nullable=False)
+    birth_year = db.Column(db.String, nullable=False)
+    height = db.Column(db.String, nullable=False)
     skin_color = db.Column(db.String(), nullable=False)
     gender = db.Column(db.String(), nullable=False)
-    home_world_id = db.Column(db.Integer, db.ForeignKey('planets.id'))
-    home_world_to = db.relationship('Planets', foreign_keys=[home_world_id])
-    specie_id =  db.Column(db.Integer, db.ForeignKey('species.id'))
-    species_to = db.relationship('Species', foreign_keys=[specie_id])   
+   # home_world_id = db.Column(db.Integer, db.ForeignKey('planets.id'))
+   # home_world_to = db.relationship('Planets', foreign_keys=[home_world_id])
+   # specie_id =  db.Column(db.Integer, db.ForeignKey('species.id'))
+   # species_to = db.relationship('Species', foreign_keys=[specie_id])   
 
     def __repr__ (self):
         return f'<name:{self.name}>'
@@ -122,8 +122,8 @@ class Characters(db.Model):
                'birth_year': self.birth_year,
                'height': self.height,
                'skin_color': self.skin_color,
-               'gender': self.gender,
-               'home_world_id': home_world_id}
+               'gender': self.gender,}
+              # 'home_world_id': home_world_id}
 
 class Species(db.Model):
     id = db.Column(db.Integer, primary_key=True)
