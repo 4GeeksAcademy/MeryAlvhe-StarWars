@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
-from api.models import db, Users, Characters
+from api.models import db, Users, Posts, Comments, Followers, Characters, Planets, Species, CharacterFavorites, PlanetFavorites
 import requests
 
 api = Blueprint('api', __name__)
@@ -106,6 +106,19 @@ def handle_users_id(user_id):
         response_body['message'] = 'User Not Found'
         response_body['results'] = {}
         return response_body, 404
+
+@api.route('/post', method=['GET', 'POST'])
+def handle_post():
+    response_body = {}
+    if request.method == 'GET':
+        row = db.session.execute(db.select(Posts)).scalars()
+        results = [ow.serialize() for row in rows]
+        response_body['results'] = results
+        response_body['message'] = 'Post list'
+        return response_body, 200
+    if request.method == 'POST':
+        
+
 
 @api.route('/comments', methods = ['GET', 'POST'])
 def handle_comment ():

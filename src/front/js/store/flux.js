@@ -246,6 +246,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error', response.status, response.status.text);
 					return
 				}
+				getActions().getcontacts();
 			}
 
 
