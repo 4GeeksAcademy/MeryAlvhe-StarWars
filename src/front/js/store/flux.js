@@ -28,12 +28,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentSpecies:[{}],
 			currentVehicleId:'',
 			currentVehicles:[{}],
+			currentContact:[{}],
 			counter: 0,
 			favorites: [],
 			favoritesColor: "fas fa-star",
 			urlApiContact:"https://playground.4geeks.com/contact/",
 			user:'',
 			contacts:[{}],
+
 			
 			
 
@@ -128,6 +130,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			settingCurrentPlanet: (id) =>{setStore({currentPlanetId:id})},
 			settingCurrentSpecies: (id) =>{setStore({currentSpeciesId:id})},
 			settingCurrentVehicles: (id) =>{setStore({currentVehicleId:id})},
+			settingCurrentContact: (id) =>{setStore({currentContact:id})},
 			getCurrentUser: async ()=>{
 				const uri = getStore().currentUserId;
 				const response = await fetch (uri);
@@ -228,6 +231,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				  };
 				  getActions().getcontacts();
+			}, 
+			editContact: async (data) => {
+				const uri = `${getStore().urlApiContact}agendas/${getStore().user}/contacts/${getStore().currentContact}`
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				}
+				const response = await fetch( uri, options);
+				if (!response.ok){
+					console.log('Error', response.status, response.status.text);
+					return
+				}
 			}
 
 

@@ -119,6 +119,18 @@ def handle_comment ():
     if request.method == 'POST': 
         post_id = request.json.get (post_id, None)
         user_id = request.json.get(user_id, None)
+        body = request.json.get(body, None)
+        date = request.json.get(date, None)
+        comment = Comments()
+        comment.post_id = post_id
+        comment.user_id = user_id
+        comment.body = body
+        comment.date = date
+        db.session.add(comment)
+        db.session.commit()
+        response_body['message'] = 'created Comment'
+        return response_body, 200
+
         
 
 @api.route('/characters', methods=['GET'])

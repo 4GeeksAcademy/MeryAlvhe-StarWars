@@ -21,6 +21,7 @@ import { CurrentPlanet } from "./pages/CurrentPlanet.jsx";
 import { CurrentSpecies } from "./pages/CurrentSpecie.jsx";
 import { CurrentVehicles } from "./pages/CurrentVehicles.jsx";
 import { Login } from "./pages/Login.jsx";
+import { ContactListEdit } from "./pages/ContactListEdit.jsx";
 
 
 //create your first component
@@ -50,6 +51,7 @@ const Layout = () => {
                         <Route element={<CurrentSpecies/>} path='/species-details'/>
                         <Route element={<CurrentVehicles/>} path='/vehicle-details'/>
                         <Route element={<ContactListForm/>} path='/contact-list-form' />
+                        <Route element={<ContactListEdit/>} path='/contact-list-Edit' />
                         <Route element={<Login/>} path='/login' />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>

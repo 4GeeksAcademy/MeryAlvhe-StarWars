@@ -2,17 +2,24 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/index.css";
+import { useNavigate } from "react-router-dom";
 
 export const ContactList = () => {
 
     const { store, actions } = useContext(Context);
     const [user, setUser] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmitUser = (event)=>{
         event.preventDefault();
         if(user.trim()!==' '){
             actions.addUser(user)
         }
+    }
+
+    const  handleEditUser = (id) =>{
+        actions.settingCurrentContact(id)
+        navigate('/contact-list-edit')
     }
 
     const handleDelete = (id) => {
@@ -36,9 +43,13 @@ export const ContactList = () => {
                         <h1 className="indexFont"> Contact List </h1>
                         <ul className="list-group font text-dark">
                             {store.contacts.map((item, id) =>
-                                <li className="list-group-item list-group-item-warning d-flex justify-content-between align-items-center" key={id}>
+                                <li className="list-group-item list-group-item-warning d-flex justify-content-between align-items-end" key={id}>
                                     {item.name}
+                                    <div className="col-1">
+                                    <i className="fa-solid fa-pen me-4" onClick={() => handleEditUser(item.id)}></i>
                                     <i className="fas fa-trash" onClick={() => handleDelete(item.id)}></i>
+                                    </div>
+
                                 </li>
 
                             )}
