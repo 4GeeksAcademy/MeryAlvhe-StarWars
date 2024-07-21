@@ -351,7 +351,7 @@ def handle_favorite_character():
         response_body['results'] = favorite_character.serialize()
         return response_body, 200
 
-@api.route('/users/<int:user_id>/favorites-Characters', methods=['GET'])
+@api.route('/users/<int:user_id>/favorites-Characters', methods=['GEgit pT'])
 def handle_users_favorites_Characters(user_id):
     response_body = {}
     saved_favorites_characters = db.session.execute(db.select(CharacterFavorites).where(CharacterFavorites.user_id == user_id)).scalars()
