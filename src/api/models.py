@@ -59,8 +59,8 @@ class Comments(db.Model):
         return{'id': self.id,
                'body': self.body,
                'date': self.date,
-               'post_to': post_to,
-               'user_to': user_to}
+               'post_id': self.post_id,
+               'user_id': self.user_id}
 
 
 class Followers(db.Model): 
@@ -160,7 +160,7 @@ class CharacterFavorites(db.Model):
     def serialize(self):
         return{'id': self.id,
                'user_id': self.user_id,
-               'character_id': character_id}
+               'character_id': self.character_id}
 
 
 class PlanetFavorites(db.Model):

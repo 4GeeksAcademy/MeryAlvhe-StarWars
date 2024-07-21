@@ -107,7 +107,7 @@ def handle_users_id(user_id):
         response_body['results'] = {}
         return response_body, 404
 
-@api.route('/post', methods=['GET', 'POST'])
+@api.route('/post', methods=['GET', 'POST', 'PUT'])
 def handle_post():
     response_body = {}
     if request.method == 'GET':
@@ -136,6 +136,23 @@ def handle_post():
     response_body['results'] = {}
     return response_body, 404
 
+@api.route('/post/<int:post_id>', methods=['PUT'])
+def handle_update_post (post_id):
+    response_body = {}
+    data =  request.json
+    if request.method == 'PUT':
+        update_post = db.session.execute(db.select(Posts).where(Posts.id == post_id)).scalar()
+        if update_post:
+            update_post.user_id = data['user_id']
+            update_post.title = data['title']
+            update_post.description = data['description']
+            update_post.body = data['body']
+            update_post.image_url = data['image_url']
+            db.session.commit()
+            response_body['message'] = 'Update post'
+            response_body['results'] = update_post.serialize()
+            return response_body, 200
+
 @api.route('/comments', methods = ['GET', 'POST'])
 def handle_comment ():
     response_body = {}
@@ -159,6 +176,36 @@ def handle_comment ():
         db.session.commit()
         response_body['message'] = 'created Comment'
         return response_body, 200
+
+@api.route('/comments/<int:comment_id>', methods=['PUT'])
+def handle_update_comment(comment_id):
+    response_body = {}
+    data =  request.json
+    if request.method == 'PUT':
+        update_comment = db.session.execute(db.select(Comments).where(Comments.id == comment_id)).scalar()
+        if update_comment:
+            update_comment.user_id = data['user_id']
+            update_comment.body = data['body']
+            update_comment.date = data['date']
+            update_comment.user_id = data['user_id']
+            db.session.commit()
+            response_body['message'] = 'Update comment'
+            response_body['results'] = update_comment.serialize()
+            return response_body, 200
+
+@api.route('/comments/<int:comments_id>', methods=['DELETE'])
+def handle_delete_comments(comments_id):
+    response_body = {}
+    comments = db.session.execute(db.select(Comments).where(Comments.id == comments_id)).scalar()
+    if comments:
+        db.session.delete(comments)
+        db.session.commit()
+        response_body['message'] = 'Comment deleted'
+        response_body['results'] = {}
+        return response_body, 200
+    response_body['message'] = 'comment Not Found'
+    response_body['results'] = {}
+    return response_body, 404      
 
 @api.route('/followers', methods=['GET', 'POST'])
 def handle_followers (): 
