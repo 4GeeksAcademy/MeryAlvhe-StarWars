@@ -35,10 +35,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			urlApiContact:"https://playground.4geeks.com/contact/",
 			user:'',
 			contacts:[{}],
-
-			
-			
-
+			login : false
 
 		},
 		actions: {
@@ -131,6 +128,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			settingCurrentSpecies: (id) =>{setStore({currentSpeciesId:id})},
 			settingCurrentVehicles: (id) =>{setStore({currentVehicleId:id})},
 			settingCurrentContact: (id) =>{setStore({currentContact:id})},
+			settingLogin: () => {setStore({login:true})},
 			getCurrentUser: async ()=>{
 				const uri = getStore().currentUserId;
 				const response = await fetch (uri);

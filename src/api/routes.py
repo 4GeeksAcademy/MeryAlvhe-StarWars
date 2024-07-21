@@ -23,7 +23,7 @@ def handle_hello():
 
 # Create a route to authenticate your users and return JWTs. The
 # create_access_token() function is used to actually generate the JWT.
-@api.route('/signup', methods=['GET', 'POST'])
+@api.route('/signup', methods=['POST'])
 def signup():
     response_body = {}
     email = request.json.get("email", None).lower()
@@ -107,33 +107,49 @@ def handle_users_id(user_id):
         response_body['results'] = {}
         return response_body, 404
 
-@api.route('/post', method=['GET', 'POST'])
+@api.route('/post', methods=['GET', 'POST'])
 def handle_post():
     response_body = {}
     if request.method == 'GET':
-        row = db.session.execute(db.select(Posts)).scalars()
-        results = [ow.serialize() for row in rows]
+        rows = db.session.execute(db.select(Posts)).scalars()
+        results = [row.serialize() for row in rows]
         response_body['results'] = results
         response_body['message'] = 'Post list'
         return response_body, 200
     if request.method == 'POST':
-        
-
+        user_id = request.json.get ("user_id", None)
+        title = request.json.get ("title", None)
+        description = request.json.get ("description", None)
+        body = request.json.get ("body", None)
+        image_url = request.json.get ("image_url", None)
+        posts = Posts()
+        posts.user_id = user_id
+        posts.title = title
+        posts.description = description
+        posts.body = body
+        posts.image_url = image_url
+        db.session.add (posts)
+        db.session.commit()
+        response_body['message'] = 'Created post'
+        return response_body, 200
+    response_body['message'] = 'Post not found'
+    response_body['results'] = {}
+    return response_body, 404
 
 @api.route('/comments', methods = ['GET', 'POST'])
 def handle_comment ():
     response_body = {}
     if request.method == 'GET':
-        row = db.session.execute(db.select(Comments)).scalars()
+        rows = db.session.execute(db.select(Comments)).scalars()
         results = [row.serialize() for row in rows]
         response_body['results'] = results
         response_body['message'] = 'Comments list'
         return response_body, 200
     if request.method == 'POST': 
-        post_id = request.json.get (post_id, None)
-        user_id = request.json.get(user_id, None)
-        body = request.json.get(body, None)
-        date = request.json.get(date, None)
+        post_id = request.json.get ("post_id", None)
+        user_id = request.json.get("user_id", None)
+        body = request.json.get("body", None)
+        date = request.json.get("date", None)
         comment = Comments()
         comment.post_id = post_id
         comment.user_id = user_id
@@ -144,7 +160,25 @@ def handle_comment ():
         response_body['message'] = 'created Comment'
         return response_body, 200
 
-        
+@api.route('/followers', methods=['GET', 'POST'])
+def handle_followers (): 
+    response_body = {}
+    if request.method == 'GET':
+        rows = db.session.execute(db.select(Followers)).scalars()
+        results = [row.serialize() for row in rows]
+        response_body['results'] = results
+        response_body['message'] = 'Followers list'
+        return response_body, 200
+    if request.method == 'POST': 
+        user_id_from_favorite = request.json.get("user_id_from_favorite", None)
+        user_id_to_favorite = request.json.get("user_id_to_favorite", None)
+        follower = Followers()
+        follower.user_id_from_favorite = user_id_from_favorite
+        follower.user_id_to_favorite = user_id_to_favorite
+        db.session.add(follower)
+        db.session.commit()
+        response_body['message'] = 'created follower'
+        return response_body, 200    
 
 @api.route('/characters', methods=['GET'])
 def handle_characters():
@@ -172,8 +206,103 @@ def handle_characters():
         response_body ['results'] = data
     return response_body, 200
 
+@api.route('/planets', methods=['GET'])
+def handle_planets():
+    response_body = {}
+    data = []
+    planet = 1
 
+    while True:
+        response = requests.get(f'https://www.swapi.tech/api/planets/{planet}')
+        if response.status_code != 200:
+            break
+        data = response.json()
+        if 'result' not in data or 'properties' not in data['result']:
+            break
+        properties = data['result']['properties']
+        planets = Planets()
+        planets.name = properties['name']
+        planets.diameter = str(properties['diameter'])
+        planets.population = str(properties['population'])
+        planets.climate = properties['climate']
+        planets.terrain = properties['terrain']
+        planets.rotation_period = properties['rotation_period']
+        db.session.add(planets)
+        db.session.commit()
+        planet += 1
+        response_body ['results'] = data
+    return response_body, 200
 
+@api.route('/species', methods=['GET'])
+def handle_species():
+    response_body = {}
+    data = []
+    specie = 1
+
+    while True:
+        response = requests.get(f'https://www.swapi.tech/api/species/{specie}')
+        if response.status_code != 200:
+            break
+        data = response.json()
+        if 'result' not in data or 'properties' not in data['result']:
+            break
+        properties = data['result']['properties']
+        species = Species()
+        species.name = properties['name']
+        species.classification= properties['classification']
+        species.designation = properties['designation']
+        species.average_height = str(properties['average_height'])
+        species.average_lifespan = str(properties['average_lifespan'])
+        species.language = properties['language']
+        db.session.add(species)
+        db.session.commit()
+        specie += 1
+        response_body ['results'] = data
+    return response_body, 200
+
+@api.route('/favorites-planets', methods=['GET','POST']) 
+def handle_favorite_planets():
+    response_body = {}
+    if request.method == 'GET':
+        rows = db.session.execute(db.select(PlanetFavorites))
+        results = [row.serialize() for row in rows]
+        response_body['results'] = results
+        response_body['message'] = 'Favorites planets'
+        return response_body, 200
+    if request.method == 'POST':
+        response_body = {}
+        planet_id = request.json.get ("planet_id", None)
+        user_id = request.json.get ("user_id", None)
+        favorite_planet = PlanetFavorites()
+        favorite_planet.planet_id = planet_id
+        favorite_planet.user_id  = user_id
+        db.session.add(favorite_planet)
+        db.session.commit()
+        response_body['message'] = 'Favorite planet'
+        response_body['results'] = favorite_planet.serialize()
+        return response_body, 200
+
+@api.route('/favorites-character', methods=['GET','POST']) 
+def handle_favorite_character():
+    response_body = {}
+    if request.method == 'GET':
+        rows = db.session.execute(db.select(CharacterFavorites))
+        results = [row.serialize() for row in rows]
+        response_body['results'] = results
+        response_body['message'] = 'Favorites characters'
+        return response_body, 200
+    if request.method == 'POST':
+        response_body = {}
+        character_id = request.json.get ("character_id", None)
+        user_id = request.json.get ("user_id", None)
+        favorite_character = PlanetFavorites()
+        favorite_character.character_id = character_id
+        favorite_character.user_id  = user_id
+        db.session.add(favorite_character)
+        db.session.commit()
+        response_body['message'] = 'Favorite character'
+        response_body['results'] = favorite_character.serialize()
+        return response_body, 200
 
 @api.route('/users/<int:user_id>/favorites-Characters', methods=['GET'])
 def handle_users_favorites_Characters(user_id):
@@ -191,19 +320,4 @@ def handle_users_favorites_planets(user_id):
     results = [row.serialize() for row in saved_favorites_planets]
     response_body['results'] = results 
     response_body['message'] = 'Saved favorites Planets'
-    return response_body, 200
-
-
-
-
-# Protect a route with jwt_required, which will kick out requests
-# without a valid JWT present.
-@api.route("/profile", methods=["GET"])
-@jwt_required()
-def protected():
-    response_body = {}
-    # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
-    print(current_user)
-    response_body['message'] = f"user logueado: {current_user}"
     return response_body, 200

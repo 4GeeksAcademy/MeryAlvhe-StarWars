@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Context } from "../store/appContext.js";
+import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
+  const { actions } = useContext(Context);
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,11 +16,34 @@ export const Signup = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const dataToSend = { email, password };
-    console.log(dataToSend);
+    const dataToSend = {
+       "email" : email,
+       "password": password };
+    const url = `https://upgraded-chainsaw-9769jgpgjqrqcxv7g-3001.app.github.dev/api/signup`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToSend),
+    };
+    const response = await fetch(url, options);
+    console.log(response);
+    if (!response.ok) {
+      console.log("Error: ", response.status, response.statusText);
+      return;
+    }
+    const data = await response.json();
+    const user = JSON.stringify(data.results);
+    // Aquí comienza nuestra lógica
+    localStorage.setItem("token", data.access_token);
+    localStorage.setItem("user", JSON.stringify(data.results));
+    actions.settingLogin()
+    navigate("/");
   };
+
 
   return (
     <div className="container mt-5">

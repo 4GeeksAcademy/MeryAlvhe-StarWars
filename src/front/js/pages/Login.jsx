@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
  export const Login = () => {
+  const navigate = useNavigate()
+  const {store, actions} = useContext(Context)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,14 +18,15 @@ import React, { useState } from "react";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const dataToSend = { email, password };
-    console.log(dataToSend);
-    const url = process.env.BACKEND_URL + '/api/login'
+    const dataToSend = { "email" : email,
+      "password" : password };
+    console.log(dataToSend)
+    const url = 'https://upgraded-chainsaw-9769jgpgjqrqcxv7g-3001.app.github.dev/api/login'
     const options = {
       method: 'POST',
       body: JSON.stringify(dataToSend),
       headers: {
-        'Content-Type': 'application-json'
+        'Content-Type': 'application/json'
       }
     }
     const response = await  fetch (url, options);
@@ -29,8 +34,10 @@ import React, { useState } from "react";
       console.log('Error:', response.status, response.statusText)
       return
     }
-    const data = await response.json()
-
+    const data = await response.json();
+    localStorage.setItem('token', data.access_token)
+    actions.settingLogin()
+    navigate('/')
   };
 
   return (

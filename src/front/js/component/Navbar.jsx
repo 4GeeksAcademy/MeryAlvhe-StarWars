@@ -6,6 +6,11 @@ import { Context } from "../store/appContext";
 export const Navbar = () => {
 	const {store, actions} = useContext(Context);
 
+	const logOut = () => {
+		localStorage.clear();
+		actions.setIsLogin(false)
+	};
+
 	return (
 		<nav className="navbar navbar-expand-lg bg-primary rounded" aria-label="Eleventh navbar example">
 			<div className="container-fluid">
@@ -34,7 +39,7 @@ export const Navbar = () => {
 
 					</ul>
 					<div className="btn-group dropstart">
-						<button className="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<button className="btn btn-warning dropdown-toggle btn-md" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Favorites 
 							<span className=" m-1 badge text-bg-danger"> {store.favorites.length} </span>
 						</button>
@@ -51,10 +56,20 @@ export const Navbar = () => {
 							
 						</ul>
 					</div>
-					<Link to="/login" className="btn btn-warning " type="button">
+					<div>
+					{store.login ? <Link to="" className="btn btn-warning buttonSize ms-1" type="button" onClick={logOut}>
+							Log out
+					</Link>:
+					<div>
+					<Link to="/login" className="btn btn-warning buttonSize ms-1" type="button">
 							Login
 					</Link>
-					
+					<Link to="/sign-up" className="btn btn-warning buttonSize ms-1" type="button">
+							Sign Up
+					</Link>
+					</div>
+					}
+					</div>
 				</div>
 			</div>
 		</nav>

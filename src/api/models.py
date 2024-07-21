@@ -24,9 +24,9 @@ class Users(db.Model):
 
 class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(), nullable=False)
-    description = db.Column(db.String(), nullable=False)
-    body = db.Column(db.String(), nullable=False)
+    title = db.Column(db.String(), nullable=True)
+    description = db.Column(db.String(), nullable=True)
+    body = db.Column(db.String(), nullable=True)
     image_url= db.Column(db.String(), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user_to = db.relationship('Users', foreign_keys=[user_id])
@@ -82,8 +82,8 @@ class Followers(db.Model):
 class Planets(db.Model): # Modelado StarWars project
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), nullable=False)
-    diameter = db.Column(db.Integer, nullable=False)
-    population = db.Column(db.Integer, nullable=False)
+    diameter = db.Column(db.String, nullable=False)
+    population = db.Column(db.String, nullable=False)
     climate = db.Column(db.String(), nullable=False)
     terrain = db.Column(db.String(), nullable=False)
     rotation_period = db.Column(db.Integer, nullable=False)
@@ -130,8 +130,8 @@ class Species(db.Model):
     name = db.Column(db.String, nullable=False)
     classification = db.Column(db.String, nullable=False)
     designation = db.Column(db.String, nullable=False)
-    average_height = db.Column(db.Integer, nullable=False)
-    average_lifespan = db.Column(db.Integer, nullable=False)
+    average_height = db.Column(db.String, nullable=False)
+    average_lifespan = db.Column(db.String, nullable=False)
     language = db.Column(db.String, nullable=False)
 
     def __repr__(self):
@@ -159,15 +159,15 @@ class CharacterFavorites(db.Model):
     
     def serialize(self):
         return{'id': self.id,
-               'user_to': self.user_to,
-               'character_favorite': character_favorite}
+               'user_id': self.user_id,
+               'character_id': character_id}
 
 
 class PlanetFavorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user_to = db.relationship('Users', foreign_keys=[user_id])    
-    planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'))
+    planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'), nullable=False)
     planet_favorite = db.relationship('Planets', foreign_keys=[planet_id])
 
     def __repr__(self):
