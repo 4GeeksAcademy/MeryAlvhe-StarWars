@@ -86,7 +86,7 @@ class Planets(db.Model): # Modelado StarWars project
     population = db.Column(db.String, nullable=False)
     climate = db.Column(db.String(), nullable=False)
     terrain = db.Column(db.String(), nullable=False)
-    rotation_period = db.Column(db.Integer, nullable=False)
+    rotation_period = db.Column(db.String, nullable=False)
 
     def __repr__ (self):
         return f'<name:{self.name}>'
@@ -175,8 +175,7 @@ class PlanetFavorites(db.Model):
     
     def serialize(self):
         return{'id': self.id,
-               'user_to': self.user_to,
-               'planet_favorite': self.planet_favorite}
-
+               'user_to': self.user_id,
+               'planet_favorite': self.planet_id}
 
 

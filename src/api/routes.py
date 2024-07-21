@@ -253,6 +253,14 @@ def handle_characters():
         response_body ['results'] = data
     return response_body, 200
 
+@api.route('/characters/<int:character_id>', methods=['GET'])
+def handle_characters_id(character_id):
+    response_body ={}
+    character = db.session.execute(db.select(Characters).where(Characters.id == character_id)).scalar()
+    if character:
+        response_body['results'] = character.serialize()
+        return response_body, 200
+
 @api.route('/planets', methods=['GET'])
 def handle_planets():
     response_body = {}
@@ -273,12 +281,21 @@ def handle_planets():
         planets.population = str(properties['population'])
         planets.climate = properties['climate']
         planets.terrain = properties['terrain']
-        planets.rotation_period = properties['rotation_period']
+        planets.rotation_period = str(properties['rotation_period'])
         db.session.add(planets)
         db.session.commit()
         planet += 1
         response_body ['results'] = data
     return response_body, 200
+
+@api.route('/planets/<int:planet_id>', methods=['GET'])
+def handle_planets_id(planet_id):
+    response_body ={}
+    planet = db.session.execute(db.select(Planets).where(Planets.id == planet_id)).scalar()
+    print('planet')
+    if planet:
+        response_body['results'] = planet.serialize()
+        return response_body, 200
 
 @api.route('/species', methods=['GET'])
 def handle_species():
@@ -307,11 +324,19 @@ def handle_species():
         response_body ['results'] = data
     return response_body, 200
 
+@api.route('/species/<int:specie_id>', methods=['GET'])
+def handle_species_id(specie_id):
+    response_body ={}
+    specie= db.session.execute(db.select(Species).where(Species.id == specie_id)).scalar()
+    if specie:
+        response_body['results'] = specie.serialize()
+        return response_body, 200
+
 @api.route('/favorites-planets', methods=['GET','POST']) 
 def handle_favorite_planets():
     response_body = {}
     if request.method == 'GET':
-        rows = db.session.execute(db.select(PlanetFavorites))
+        rows = db.session.execute(db.select(PlanetFavorites)).scalars()
         results = [row.serialize() for row in rows]
         response_body['results'] = results
         response_body['message'] = 'Favorites planets'
@@ -329,11 +354,25 @@ def handle_favorite_planets():
         response_body['results'] = favorite_planet.serialize()
         return response_body, 200
 
+@api.route('/favorites-planets/<int:planet_id>', methods=['DELETE'])
+def handle_delete_planet(planet_id):
+    response_body = {}
+    favorite_planet = db.session.execute(db.select(PlanetFavorites).where(PlanetFavorites.id == planet_id)).scalar()
+    if favorite_planet:
+        db.session.delete(favorite_planet)
+        db.session.commit()
+        response_body['message'] = 'Planet deleted'
+        response_body['results'] = {}
+        return response_body, 200
+    response_body['message'] = 'Planet Not Found'
+    response_body['results'] = {}
+    return response_body, 404 
+
 @api.route('/favorites-character', methods=['GET','POST']) 
 def handle_favorite_character():
     response_body = {}
     if request.method == 'GET':
-        rows = db.session.execute(db.select(CharacterFavorites))
+        rows = db.session.execute(db.select(CharacterFavorites)).scalars()
         results = [row.serialize() for row in rows]
         response_body['results'] = results
         response_body['message'] = 'Favorites characters'
@@ -342,7 +381,7 @@ def handle_favorite_character():
         response_body = {}
         character_id = request.json.get ("character_id", None)
         user_id = request.json.get ("user_id", None)
-        favorite_character = PlanetFavorites()
+        favorite_character = CharacterFavorites()
         favorite_character.character_id = character_id
         favorite_character.user_id  = user_id
         db.session.add(favorite_character)
@@ -351,7 +390,21 @@ def handle_favorite_character():
         response_body['results'] = favorite_character.serialize()
         return response_body, 200
 
-@api.route('/users/<int:user_id>/favorites-Characters', methods=['GEgit pT'])
+@api.route('/favorites-character/<int:character_id>', methods=['DELETE'])
+def handle_delete_character(character_id):
+    response_body = {}
+    favorite_character = db.session.execute(db.select(CharacterFavorites).where(CharacterFavorites.id == character_id)).scalar()
+    if favorite_character:
+        db.session.delete(favorite_character)
+        db.session.commit()
+        response_body['message'] = 'Character deleted'
+        response_body['results'] = {}
+        return response_body, 200
+    response_body['message'] = 'Character Not Found'
+    response_body['results'] = {}
+    return response_body, 404 
+
+@api.route('/users/<int:user_id>/favorites-Characters', methods=['GET'])
 def handle_users_favorites_Characters(user_id):
     response_body = {}
     saved_favorites_characters = db.session.execute(db.select(CharacterFavorites).where(CharacterFavorites.user_id == user_id)).scalars()
