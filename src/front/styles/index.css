@@ -1,3 +1,23 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+.indexFont {
+    font-family: "Jersey 25", sans-serif;
+    color: #FFC300;
+}
+.close {
+    margin-right: 25px;
+    font-size: 30px;
+    color: #FFC300;
+}
+
+.imgCard {
+    margin-left: 30px;
+}
+.font {
+    font-family: "Jersey 25", sans-serif;
+}
+
+/* .favorite:hover {
+    color: #FFC300;
+} */
+.favorite:hover{
+    color: #FFC300;
+}
